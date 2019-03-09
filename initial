@@ -22,6 +22,10 @@ Type 'q()' to quit R.
 Warning message:
 package ‘ggplot2’ was built under R version 3.5.1 
 > # data cleansing - identify missing data
+
+
+
+
 > summary(wine)
        X              country     
  Min.   :     0   US      :54504  
@@ -71,8 +75,41 @@ package ‘ggplot2’ was built under R version 3.5.1
  Bordeaux-style Red Blend: 6915   Louis Latour      :   199  
  Riesling                : 5189   Georges Duboeuf   :   196  
  (Other)                 :74424   (Other)           :128710  
+> wine %>% filter(wine$price > 1000)
+# A tibble: 14 x 14
+       X1 country description designation points price province region_1 region_2 taster_name taster_twitter_~ title
+    <dbl> <chr>   <chr>       <chr>        <dbl> <dbl> <chr>    <chr>    <chr>    <chr>       <chr>            <chr>
+ 1   1558 France  A massive ~ NA              98  1900 Bordeaux Margaux  NA       Roger Voss  @vossroger       Chât~
+ 2   1566 France  Such a gen~ NA              97  1100 Bordeaux Pessac-~ NA       Roger Voss  @vossroger       Chât~
+ 3   1571 France  Solid, ver~ NA              96  1200 Bordeaux Pessac-~ NA       Roger Voss  @vossroger       Chât~
+ 4   1575 France  The purest~ NA              96  1300 Bordeaux Pauillac NA       Roger Voss  @vossroger       Chât~
+ 5  15840 France  The wine i~ NA              96  2500 Bordeaux Pomerol  NA       Roger Voss  @vossroger       Chât~
+ 6  65352 France  This extra~ NA              97  2000 Bordeaux Pomerol  NA       Roger Voss  @vossroger       Chât~
+ 7  80290 France  This ripe ~ NA              88  3300 Bordeaux Médoc    NA       Roger Voss  @vossroger       Chât~
+ 8  89478 Austria Wet earth,~ Ried Loibe~     94  1100 Wachau   NA       NA       Anne Krebi~ @AnneInVino      Emme~
+ 9  98380 France  A superb w~ NA              96  2500 Burgundy La Roma~ NA       Roger Voss  @vossroger       Doma~
+10 111753 France  Almost bla~ NA             100  1500 Bordeaux Pauillac NA       Roger Voss  @vossroger       Chât~
+11 111755 France  This is th~ NA             100  1500 Bordeaux Saint-É~ NA       Roger Voss  @vossroger       Chât~
+12 113564 France  A wonderfu~ NA              96  2000 Burgundy La Roma~ NA       Roger Voss  @vossroger       Doma~
+13 113581 France  While it s~ NA              94  1125 Burgundy La Roma~ NA       Roger Voss  @vossroger       Doma~
+14 120391 US      The nose o~ Roger Rose~     91  2013 Califor~ Arroyo ~ Central~ Matt Kettm~ @mattkettmann    Blai~
+# ... with 2 more variables: variety <chr>, winery <chr>
+> sum(wine$price > 1000, na.rm = TRUE)
+[1] 14
+> sum(wine$price > 500, na.rm = TRUE)
+[1] 91
+> print(colSums(is.na(wine)))
+                   X1               country           description           designation                points 
+                    0                    63                     0                 37465                     0 
+                price              province              region_1              region_2           taster_name 
+                 8996                    63                 21247                 79460                 26244 
+taster_twitter_handle                 title               variety                winery 
+                31213                     0                     1                     0 
+
+
 > #replace missing price with median price
 > wine$price[is.na(wine$price)]<-median(wine$price,na.rm=TRUE)
+
 > summary(wine)
        X              country     
  Min.   :     0   US      :54504  
@@ -122,6 +159,51 @@ package ‘ggplot2’ was built under R version 3.5.1
  Bordeaux-style Red Blend: 6915   Louis Latour      :   199  
  Riesling                : 5189   Georges Duboeuf   :   196  
  (Other)                 :74424   (Other)           :128710  
+
+> summary(wine$price)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   4.00   18.00   25.00   34.65   40.00 3300.00 
+
+> unique_vals<-lapply(wine, unique)
+> sapply(unique_vals, length)
+                   X1               country           description           designation                points 
+               129971                    44                119955                 37980                    21 
+                price              province              region_1              region_2           taster_name 
+                  390                   426                  1230                    18                    20 
+taster_twitter_handle                 title               variety                winery 
+                   16                118840                   708                 16757 
+> 
+
+
+> summary(wine$points)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  80.00   86.00   88.00   88.45   91.00  100.00 
+> sum(wine$price == 100)
+[1] 585
+> sum(wine$points == 100)
+[1] 19
+> sum(wine$points == 80)
+[1] 397
+> > library(ggplot2)
+> ggplot(wine, aes(x = points))
+> hist(wine$points)
+
+> ggplot(data = wine, aes(x= price, colour = I('black'), fill = I('#099DD9')))+
++     geom_histogram()+
++     labs(x = "Price", y= "Frequency", title = "Distribution of log(prices)") #slightly right skewed
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+> wine$logprice <- log(wine$price)
+> ggplot(data = wine, aes(x= log(price), colour = I('black'), fill = I('#099DD9')))+
++     geom_histogram()+
++     labs(x = "log(Price)", y= "Frequency", title = "Distribution of log(prices)") #slightly right skewed
+
+
+
+
+
+
+
 > summary(wine)
        X              country     
  Min.   :     0   US      :54504  
