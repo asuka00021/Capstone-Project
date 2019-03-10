@@ -1649,3 +1649,47 @@ $lambda.1se
 
 attr(,"class")
 [1] "cv.glmnet"
+#2nd try on the model
+>glmnet_classifer2 = cv.glmnet(x = dtm_traintfidf2, y = train[['points']])
+>coef_glmnetclassifer2 = coef(glmnet_classifer2, s = "lambda.min")
+>coef_glmnetclassifier2
+ints_vanilla           .          
+juicy_wild              1.457592733
+flavors_fine            .          
+texture_rich           -0.225615160
+along_way              -0.516097562
+scour                   .          
+acidity_minerality      0.858946857
+aromas_orange          -1.199256055
+silk                    2.191390619
+pinched                -1.740853866
+tannins_grip            .          
+drink_immediately      -1.064274722
+meant                   .          
+packed_tannins          .          
+slightly_herbal         0.228018408
+mixing                 -0.744771149
+>predict(glmnet_classifer2, dtm_testfidf2, s= "lambda.min")
+> pred2 = data.frame(price= test$points, predict(glmnet_classifer2, dtm_testfidf2, s= "lambda.min"))
+> pred2
+     price       X1
+6       87 87.01192
+19      87 88.07445
+28      87 87.93141
+40      86 88.14954
+42      86 85.08234
+45      86 87.91136
+47      86 86.41557
+50      86 87.83164
+56      85 87.14959
+>print(glmnet_classifier2)
+
+$lambda.min
+[1] 0.003073756
+
+$lambda.1se
+[1] 0.005371475
+
+attr(,"class")
+[1] "cv.glmnet"
+
