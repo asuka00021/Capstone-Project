@@ -1714,3 +1714,4 @@ attr(,"class")
 > mse<- mean((pred3$price - pred3$X1)^2)
 > print(mse)
 [1] 3.440355
+> write.csv(pred3, file = "pred3.csv", row.names = FALSE, quote = FALSE)
