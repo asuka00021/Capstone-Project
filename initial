@@ -1693,3 +1693,24 @@ $lambda.1se
 attr(,"class")
 [1] "cv.glmnet"
 
+Final Try - use the dtm_tfidf straight( not the $len one)
+> glmnet_classifier3=cv.glmnet(x = dtm_train_tfidf, y = train[['points']])
+> plot(glmnet_classifier3)
+> pred3 = data.frame(price= test$points, predict(glmnet_classifier3, dtm_test_tfidf, s= "lambda.min"))
+> print(glmnet_classifier3)
+
+$lambda.min
+[1] 0.003373443
+
+$lambda.1se
+[1] 0.005371475
+
+attr(,"class")
+[1] "cv.glmnet"
+>pred3
+> plot(glmnet_classifier3)
+> mean(pred3$price-pred3$X1)
+[1] -0.02976144
+> mse<- mean((pred3$price - pred3$X1)^2)
+> print(mse)
+[1] 3.440355
