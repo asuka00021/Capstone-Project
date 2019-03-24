@@ -899,6 +899,7 @@ Error in .subset2(public_bind_env, "initialize")(...) :
 > clean <- function(train, test) {
 + prep_func <- tolower
 + tok_func <- function(x) {word_tokenizer(x) %>% lapply(function(x) SnowballC::wordStem(x, language='en'))}}
+> train$description<- as.character(train$description)
 > it_train<- itoken(train$description, preprocessor = prep_func, tokenizer = tok_func, ids = train$X1, progressbar = T)
 Error in .subset2(public_bind_env, "initialize")(...) : 
   object 'prep_func' not found
@@ -965,8 +966,9 @@ dtm_train_tfidf <- fit_transform(dtm_train, tfidf)
 it_test <- itoken(test$description, preprocessor = prep_fun, tokenizer = tok_fun, ids = test$X1, progressbar = TRUE)
 dtm_test_tfidf <- create_dtm(it_test, vectorizer) %>%
 transform(tfidf)
-list('train' = as.matrix(cbind(dtm_train_tfidf, train$price)), 'test' = as.matrix(cbin(dtm_test_tfidf, test$price)))
+
 list('train' = as.matrix(cbind(dtm_train_tfidf, train$price)), 'test' = as.matrix(cbind(dtm_test_tfidf, test$price)))
+>> list('train' = as.matrix(cbind(dtm_train_tfidf, train$points)), 'test' = as.matrix(cbind(dtm_test_tfidf, test$points)))
 
 #Currently I am trying to download the Lightgbm package but could not do so yet. So I am using the glmnet to build the prediction model
 > summary(dtm_train)
