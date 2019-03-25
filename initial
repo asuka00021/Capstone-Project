@@ -2780,6 +2780,8 @@ Error in maen((preds_logprice$id - preds_logprice$X1)^2) :
   could not find function "maen"
 > print(mse)
 [1] 3.440155
+
+
 #let's try with the price directly to see a different in result+
 > fit_price= cv.glmnet(x = dtm_train_tfidf, y = train[['price']], type.measure = "mse", nfolds = 20)
 > print(fit_price)
