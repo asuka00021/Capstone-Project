@@ -2759,3 +2759,41 @@ preds4
 > mse<- mean((preds5$id - preds5$X1)^2)
 > print(mse)
 [1] 3.440155
+#preds 5 and preds4 are similar in accuracy.next move on to see if we could predict the log price as well.
+
+fit_logprice= cv.glmnet(x = dtm_train_tfidf, y = train[['logprice']], type.measure = "mse", nfolds = 20)
+coef(fit_logprice, s = "lambda.min")
+preds_logprice = data.frame(id=test$logprice, predict.cv.glmnet(fit_logprice, dtm_test_tfidf, s="lambda.min"))
+preds_logprice
+coef(fit_logprice, s = "lambda.min")
+>print(fit_logprice)
+$lambda.min
+[1] 0.00107758
+
+$lambda.1se
+[1] 0.002066702
+
+attr(,"class")
+[1] "cv.glmnet"
+> mse<- maen((preds_logprice$id - preds_logprice$X1)^2)
+Error in maen((preds_logprice$id - preds_logprice$X1)^2) : 
+  could not find function "maen"
+> print(mse)
+[1] 3.440155
+#let's try with the price directly to see a different in result+
+> fit_price= cv.glmnet(x = dtm_train_tfidf, y = train[['price']], type.measure = "mse", nfolds = 20)
+> print(fit_price)
+
+$lambda.min
+[1] 0.1066846
+
+$lambda.1se
+[1] 1.315258
+
+attr(,"class")
+[1] "cv.glmnet"
+> preds_price = data.frame(id=test$price,predict.cv.glmnet(fit_price, dtm_test_tfidf, s="lambda.min"))
+> > mse<- mean((preds_price$id - preds_price$X1)^2)
+> print(mse)
+[1] 1792.444
+#cannot use price directly.
