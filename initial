@@ -2799,3 +2799,38 @@ attr(,"class")
 > print(mse)
 [1] 1792.444
 #cannot use price directly.
+
+
+> dtm2_train <-cbind(train$points, dtm_train_tfidf)
+> dtm2_test <-cbind(test$points, dtm_test_tfidf)
+> fit_2_points = cv.glmnet(x = dtm2_train, y = train[['points']], type.measure = "mse", nfolds = 20)
+
+> fit_2_points = glmnet(x = dtm2_train, y = train[['points']], type.measure = "mse", nfolds = 20)
+
+> library(glmnet)
+Loading required package: Matrix
+Loading required package: foreach
+Loaded glmnet 2.0-16
+
+> fit_2_points = cv.glmnet(x = dtm2_train, y = train[['points']], type.measure = "mse", nfolds = 20)
+> fit2_prediction = data.frame(id = test$points, predict(fit_2_points, dtm2_train, s = "lambda.min"))
+> fit2_prediction
+> mse <- mean((fit2_prediction$id - fit2_prediction$X1)^2)
+> print(mse)
+[1] 18.47893
+> > fit_2_points$lambda.min
+[1] 0.09904023
+> fit_2_points$lambda.1se
+[1] 0.09904023
+> library(broom)
+> glance(fit_2_points)
+# A tibble: 1 x 2
+  lambda.min lambda.1se
+       <dbl>      <dbl>
+1     0.0990     0.0990
+> glance(fit)
+# A tibble: 1 x 2
+  lambda.min lambda.1se
+       <dbl>      <dbl>
+1    0.00307    0.00537
+#fit is still better given smaller min mse
