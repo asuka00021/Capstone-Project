@@ -3357,3 +3357,12 @@ Loaded glmnet 2.0-16
 [1] 0.09904023
 > alphahalf.fit$lambda.min
 [1] 0.1032793
+#check R square from Preds4
+> rss <- sum((preds4$id - preds4$X1)^2)
+> tss <- sum((preds4$id - mean(preds4$id)) ^ 2) 
+> rsq <- 1 - rss/tss
+> rsq
+[1] 0.6378431
+> regss <- sum((preds4$X1 - mean(preds4$X1)) ^ 2) 
+> regss/tss
+[1] 0.6384919
