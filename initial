@@ -3366,3 +3366,30 @@ Loaded glmnet 2.0-16
 > regss <- sum((preds4$X1 - mean(preds4$X1)) ^ 2) 
 > regss/tss
 [1] 0.6384919
+#now compare with preds2/3/5 R square to find the best fitting model
+> rss <- sum((preds4$id - preds4$X1)^2)
+> tss <- sum((preds4$id - mean(preds4$id)) ^ 2) 
+> rsq <- 1 - rss/tss
+> rsw
+Error: object 'rsw' not found
+> rsq
+[1] 0.6378431
+> regss <- sum((preds4$X1 - mean(preds4$X1)) ^ 2) 
+> regss/tss
+[1] 0.6384919
+> pred2rss <- sum((preds2$id - preds2$X1)^2)
+> preds2tss <- sum((preds2$id - mean(preds2$id)) ^ 2) 
+> preds2rsq <- 1-pred2rss/preds2tss
+> preds2rsq
+[1] 0.5390122
+> pred3rss <- sum((preds3$id - preds3$X1)^2)
+> preds3tss <- sum((preds3$id - mean(preds3$id)) ^ 2) 
+> preds3rsq <- 1-pred3rss/preds3tss
+> preds3rsq
+[1] 0.6366046
+> pred5rss <- sum((preds5$id - preds5$X1)^2)
+> preds5tss <- sum((preds5$id - mean(preds5$id)) ^ 2) 
+> preds5rsq <- 1-pred5rss/preds5tss
+> preds5rsq
+[1] 0.6378431
+#Preds 4 still the best as it explain the most proportion of the variables by the model.
